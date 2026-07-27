@@ -1,0 +1,6 @@
+# Required for both versions of the tool
+SpeechRecognition==3.10.4
+
+# Required only for the microphone version (speech_to_text_microphone.py)
+# Note: PyAudio can be tricky to install on some systems - see README.md
+PyAudio==0.2.14
