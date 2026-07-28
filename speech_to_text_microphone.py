@@ -10,7 +10,14 @@ def record_from_microphone():
     try:
         with sr.Microphone(device_index=8) as source:  # Headset (Nirvana Ion ANC) - confirmed working
             print("Adjusting for background noise, hang on...")
-            r.adjust_for_ambient_noise(source, duration=1)
+            r.adjust_for_ambient_noise(source, duration=2)
+            print(f"Energy threshold set to: {r.energy_threshold:.0f}")
+
+            # Bluetooth mics often have a noisy baseline that throws off
+            # auto-adjustment - give it more room and don't let it keep
+            # re-adjusting mid-recording.
+            r.dynamic_energy_threshold = False
+            r.pause_threshold = 1.0
 
             print("Listening... speak now!")
             # timeout = max seconds to wait for speech to start
@@ -29,6 +36,12 @@ def record_from_microphone():
 
 def transcribe(audio):
     r = sr.Recognizer()
+
+    # Save what was actually recorded so we can listen back and debug
+    # if transcription keeps failing.
+    with open("debug_recording.wav", "wb") as f:
+        f.write(audio.get_wav_data())
+    print("Saved raw recording to debug_recording.wav - play it to check audio quality")
 
     try:
         print("Transcribing...")
