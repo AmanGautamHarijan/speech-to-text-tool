@@ -8,7 +8,7 @@ def record_from_microphone():
     r = sr.Recognizer()
 
     try:
-        with sr.Microphone(device_index=8) as source:  # Headset (Nirvana Ion ANC) - confirmed working
+        with sr.Microphone(device_index=7) as source:  # Microphone Array (Realtek) - built-in mic
             print("Adjusting for background noise, hang on...")
             r.adjust_for_ambient_noise(source, duration=2)
             print(f"Energy threshold set to: {r.energy_threshold:.0f}")
